@@ -16,7 +16,11 @@ committing. This is the verification step.
 | Brief    | Link to `briefs/<NNN>-<slug>.md` |
 | Expected | Copied from the brief verbatim, including `[test]`/`[manual]` tags — what should be true after this session |
 | Changed  | Student-confirmed list of what actually changed and why. `[test]` items are reported passing/failing based on an actual run; `[manual]` items are listed as "pending student review," never characterized |
-| Rationale | Required whenever the session made a nontrivial decision — a real tradeoff was weighed, not just requested work carried out. One paragraph: what was decided and what informed it. Omit when there was no decision to justify. |
+| Rationale | Required whenever the session made a nontrivial decision.
+One paragraph: what was decided and what informed it. When the decision
+was filling a gap the brief left open, say so explicitly — separate what
+the brief specified from what Claude decided on its own. Omit when there
+was no decision to justify. |
 | Fix      | — / manual / follow-up |
 
 ## Log
@@ -63,5 +67,29 @@ The brief didn't specify behavior for characters outside G/C/A/T or for an empty
 —
 
 **Fix:** —
+
+---
+
+### 003 — 2026-07-07 — CLI script for gc_content
+
+**Brief:** `briefs/003-2026-07-07-cli-script.md`
+
+**Expected:**
+- Given: the gc_content_script.py and a string
+- When: python gc_content_script.py "GCGC" is run
+- Then: [test] python gc_content_script.py "GCGC" should return 1.0
+- Then: [test] python gc_content_script.py "GCGC" --percent should return 100
+
+**Changed:**
+- `gc_content_script.py` — new file; self-contained (no import of `gc_content.py`, per Scope), with its own `gc_content(sequence, percent=False)` implementation. Takes the sequence as a positional CLI argument and an optional `--percent` flag (default off), and prints the result.
+- test suite passes
+
+**Rationale:**
+The brief specified that the script must not import code and must contain everything it needs itself, so Claude duplicated the GC-counting logic from `gc_content.py` into `gc_content_script.py` rather than importing it — this is intentional duplication per Scope, not an oversight. The brief didn't specify how the result should be surfaced or how `--percent` should be parsed; Claude decided to use `argparse` with a `store_true` flag and to print the result to stdout, since a CLI script has no return value in the way a function does.
+
+The original brief was underspecified and ended up with a script that imported the original function, and used a positional
+sys argv for the input. Claude chose to use argparse in this new iteration rather than sys.argv.
+
+**Fix:** -
 
 ---
