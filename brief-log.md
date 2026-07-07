@@ -43,3 +43,25 @@ The brief didn't specify behavior for characters outside G/C/A/T or for an empty
 **Fix:** —
 
 ---
+
+### 002 — 2026-07-07 — Add percent argument to gc_content
+
+**Brief:** `briefs/002-2026-07-07-add-argument.md`
+
+**Expected:**
+- Given: the gc_content function with the optional flag percent set by default as false
+- When: the function is run with the optional flag percent is true
+- Then: [test] gc_content("GGGC", percent=True) should return 100
+- Then: [test] gc_content("GGGC", percent=False) should return 1.0
+- Then: [test] gc_content("GGGC") should return 1.0
+
+**Changed:**
+- `gc_content.py` — added optional `percent` argument (default `False`) to `gc_content`; when `True`, multiplies the proportion by 100.
+- `[test]` items: <!-- confirm pass/fail from your own run -->
+
+**Rationale:**
+—
+
+**Fix:** —
+
+---
